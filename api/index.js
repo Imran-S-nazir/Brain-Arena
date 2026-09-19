@@ -74,7 +74,7 @@ app.use(async (req, res, next) => {
 // ==========================================
 
 // 1. Health check
-app.get('/api/health', (req, res) => {
+app.get(['/api/health', '/health'], (req, res) => {
   res.json({
     status: 'ok',
     environment: 'vercel-serverless',
@@ -84,7 +84,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // 2. Sync User / Score with MongoDB
-app.post('/api/users/sync', async (req, res) => {
+app.post(['/api/users/sync', '/users/sync'], async (req, res) => {
   try {
     const data = req.body || {};
     const username = (data.username || (data.profile && data.profile.username) || '').trim();
@@ -171,7 +171,7 @@ app.post('/api/users/sync', async (req, res) => {
 });
 
 // 3. Fetch Leaderboard from MongoDB (Source of Truth)
-app.get('/api/leaderboard', async (req, res) => {
+app.get(['/api/leaderboard', '/leaderboard'], async (req, res) => {
   try {
     if (mongoose.connection.readyState !== 1) {
       return res.json({ success: true, source: 'fallback', users: [] });
@@ -202,7 +202,7 @@ app.get('/api/leaderboard', async (req, res) => {
 });
 
 // 4. Get Single User Profile
-app.get('/api/users/:username', async (req, res) => {
+app.get(['/api/users/:username', '/users/:username'], async (req, res) => {
   try {
     const raw = (req.params.username || '').trim();
     if (!raw) return res.status(400).json({ success: false, error: 'Username required' });
@@ -222,7 +222,7 @@ app.get('/api/users/:username', async (req, res) => {
 });
 
 // 5. Delete User from MongoDB
-app.delete('/api/users/:username', async (req, res) => {
+app.delete(['/api/users/:username', '/users/:username'], async (req, res) => {
   try {
     const raw = (req.params.username || '').trim();
     if (!raw) return res.status(400).json({ success: false, error: 'Username required' });
@@ -238,22 +238,9 @@ app.delete('/api/users/:username', async (req, res) => {
   }
 });
 
-// Serve frontend static files and root HTML
-const path = require('path');
-const fs = require('fs');
-
-const rootDir = fs.existsSync(path.join(__dirname, '..', 'index.html'))
-  ? path.resolve(__dirname, '..')
-  : (fs.existsSync(path.join(process.cwd(), 'index.html')) ? process.cwd() : __dirname);
-
-app.use(express.static(rootDir));
-
-app.get('/', (req, res) => {
-  const indexFile = path.join(rootDir, 'index.html');
-  if (fs.existsSync(indexFile)) {
-    return res.sendFile(indexFile);
-  }
-  return res.status(200).send('<h1>Brain Arena Serverless Ready</h1>');
+// API Root Status
+app.get(['/api', '/'], (req, res) => {
+  res.json({ status: 'ok', service: 'Brain Arena API', time: new Date() });
 });
 
 module.exports = app;
