@@ -238,4 +238,12 @@ app.delete('/api/users/:username', async (req, res) => {
   }
 });
 
+// Serve frontend files if routed to Express
+const path = require('path');
+const publicDir = path.resolve(__dirname, '..');
+app.use(express.static(publicDir));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(publicDir, 'index.html'));
+});
+
 module.exports = app;
