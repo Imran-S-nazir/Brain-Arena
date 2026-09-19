@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brain Arena | Campus Brain Battle 2026</title>
+  <meta name="description" content="University Fest Brain Arcade: 2-3 minute brain teasers, speed runs, friend duels and campus leaderboard competition.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body class="arena-body">
+  <!-- Audio Context Activator & Canvas Confetti -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- ==========================================
+       VIEW 1: LANDING & ONBOARDING (MATCHING SCREENSHOT)
+       ========================================== -->
+  <div class="landing-view-container" id="landing-view">
+    <!-- Landing Header -->
+    <header class="landing-header">
+      <div class="landing-logo">
+        <span class="landing-logo-icon">🥋</span>
+        <div class="landing-logo-text">
+          <span class="landing-logo-title">Dimaag Dojo</span>
+          <span class="landing-logo-sub">CAMPUS BRAIN ARENA</span>
+        </div>
+      </div>
+      <div class="landing-header-right">
+        <button class="theme-circle-btn" id="landing-audio-btn" title="Toggle Sound">
+          <span id="landing-audio-icon">🌙</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Hero Dojo Card -->
+    <main class="landing-main">
+      <div class="dojo-card">
+        <div class="dojo-glow-orb"></div>
+
+        <h1 class="dojo-heading">
+          Train your <span class="dimaag-gold">dimaag</span>,<br>one spar at a time.
+        </h1>
+
+        <p class="dojo-subheading">
+          Logic puzzles, number rings, ciphers & riddles that change every single time — level up your belt as you get sharper.
+        </p>
+
+        <!-- Name Input Form -->
+        <form class="warrior-form" id="warrior-form">
+          <label class="form-label" for="warrior-name-input">What's your name, warrior?</label>
+          <div class="input-wrap">
+            <input 
+              type="text" 
+              id="warrior-name-input" 
+              class="warrior-input" 
+              placeholder="Enter your name (e.g. Rahul, Priya)" 
+              value="" 
+              maxlength="24"
+              autocomplete="name"
+              required
+            >
+          </div>
+
+          <button type="submit" class="enter-dojo-btn" id="enter-dojo-btn">
+            <span>Enter the Dojo</span> <span class="btn-belt-icon">🥋</span>
+          </button>
+
+          <div class="landing-resume-box hidden" id="landing-resume-wrap" style="margin-top: 0.85rem; text-align: center;">
+            <button type="button" class="btn-resume-arena" id="landing-resume-btn" style="background: rgba(123, 97, 255, 0.15); border: 1px solid rgba(123, 97, 255, 0.4); color: #C4B5FD; border-radius: 8px; padding: 0.45rem 1rem; font-size: 0.84rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
+              ⚡ Return to Arena Dashboard as <span id="landing-resume-name">Player</span> →
+            </button>
+          </div>
+        </form>
+
+        <div class="dojo-divider"></div>
+
+        <!-- Top Warriors / Student Leaderboard Preview -->
+        <div class="top-warriors-section">
+          <div class="section-title-wrap">
+            <span class="trophy-emoji">🏆</span>
+            <span class="section-title-text">Top Warriors (Student Leaderboard)</span>
+          </div>
+
+          <div class="top-warriors-list" id="landing-top-warriors">
+            <!-- Injected dynamically via JS -->
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==========================================
+       VIEW 1.5: CINEMATIC WELCOME CEREMONY (EVENT OPENING EXPERIENCE)
+       ========================================== -->
+  <div class="welcome-ceremony-stage hidden" id="welcome-ceremony-stage">
+    <!-- Dedicated Canvas for 60fps Petal & Particle Rain -->
+    <canvas id="welcome-petals-canvas"></canvas>
+
+    <!-- Ambient Glow Orbs -->
+    <div class="ceremony-glow-orb ceremony-glow-left"></div>
+    <div class="ceremony-glow-orb ceremony-glow-right"></div>
+
+    <!-- Secondary Skip Button -->
+    <button class="ceremony-skip-btn" id="ceremony-skip-btn" type="button" title="Skip to Dashboard">
+      Skip →
+    </button>
+
+    <!-- Center Stage -->
+    <div class="ceremony-content">
+      <div class="ceremony-emblem" id="ceremony-emblem">
+        <span id="ceremony-emblem-icon">🥋</span>
+      </div>
+
+      <div class="ceremony-phrase-box" id="ceremony-phrase-box" aria-live="polite"></div>
+
+      <div class="ceremony-subphrase-box" id="ceremony-subphrase-box"></div>
+
+      <div class="ceremony-cta-wrap hidden" id="ceremony-cta-wrap">
+        <button class="btn-enter-arena" id="btn-enter-arena" type="button">
+          <span>ENTER THE ARENA</span> <span class="btn-pulse-icon">⚡</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       VIEW 2: CAMPUS EVENT ARCADE DASHBOARD
+       ========================================== -->
+  <div class="app-stage-view hidden" id="arcade-dashboard-view">
+    <!-- University Fest Event Brand Strip -->
+    <div class="event-brand-strip">
+      <div class="event-brand-title">
+        <span class="live-dot"></span>
+        <span>University Brain Arena • <strong>Campus Brain Battle 2026</strong></span>
+      </div>
+      <div class="event-day-pill">DAY 2 OF 3</div>
+    </div>
+
+    <!-- Top Navigation Bar & User HUD -->
+    <header class="arena-header">
+      <div class="header-left">
+        <div class="brand-logo" id="brand-home-btn" role="button" tabindex="0" title="Return to Dojo Home Screen">
+          <div class="logo-mark">🥋</div>
+          <div class="logo-text">
+            <span class="logo-main">DIMAAG</span>
+            <span class="logo-sub">DOJO</span>
+          </div>
+        </div>
+
+        <nav class="mode-pills" id="arcade-nav-pills">
+          <button class="mode-pill" id="nav-home-btn" title="Return to Dojo Home & Switch Student">🏠 Home</button>
+          <button class="mode-pill" id="nav-quickplay-btn">⚡ Quick Play</button>
+          <button class="mode-pill" id="nav-leaderboard-btn">🏆 Leaderboard</button>
+          <button class="mode-pill" id="nav-rewards-btn">🎁 Rewards</button>
+          <button class="mode-pill" id="nav-duel-btn">👥 Duel</button>
+        </nav>
+      </div>
+
+      <div class="header-hud">
+        <!-- Player Name Tag with Switch Student Option -->
+        <div class="hud-item player-name-hud" id="player-name-hud" title="Active Player">
+          <span class="player-avatar">👤</span>
+          <span class="player-name-text" id="hud-player-name">Player</span>
+          <button class="hud-switch-btn" id="hud-switch-btn" title="Switch Student / Return to Home Screen">🔄 Switch</button>
+        </div>
+
+        <!-- Streak Counter -->
+        <div class="hud-item streak-hud" id="streak-hud" title="Solve Streak">
+          <span class="hud-icon">🔥</span>
+          <span class="hud-value" id="streak-val">0</span>
+          <span class="hud-label">Streak</span>
+        </div>
+
+        <!-- XP & Belt -->
+        <div class="hud-item xp-level-hud" id="xp-level-hud" title="XP Progress">
+          <div class="tier-badge" id="tier-badge">WHITE BELT</div>
+          <div class="xp-bar-container">
+            <div class="xp-text">
+              <span class="tier-level" id="user-level">Lvl 1</span>
+              <span class="xp-numbers" id="xp-numbers">0 XP</span>
+            </div>
+            <div class="xp-track">
+              <div class="xp-fill" id="xp-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coins / Event Credits -->
+        <div class="hud-item points-hud" id="points-hud" title="Event Coins">
+          <span class="hud-icon">🪙</span>
+          <span class="hud-value" id="arena-points">0</span>
+        </div>
+
+        <!-- Leaderboard Shortcut -->
+        <button class="hud-btn" id="leaderboard-toggle-btn" title="View Campus Leaderboard">
+          <span id="hud-rank-text">🏆 #1 Rank</span>
+        </button>
+
+        <!-- Audio Toggle -->
+        <button class="hud-icon-btn" id="audio-toggle-btn" title="Toggle Sound">
+          <span id="audio-btn-icon">🔊</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ARCADE DASHBOARD CONTENT (BRAIN ARENA - 100% REAL EVENT DATA) -->
+    <main class="arcade-dashboard">
+      <!-- 1. HERO SECTION -->
+      <section class="arcade-hero">
+        <div class="hero-tag">⚡ FEST SPECIAL • 2–10 MIN GAMES</div>
+        <h1 class="hero-title">🧠 BRAIN ARENA</h1>
+        <p class="hero-subtitle">Ready to test your brain? Take a quick break, solve tricky puzzles, and challenge campus warriors.</p>
+
+        <!-- Live Player Stats Row (Real Dynamic Data) -->
+        <div class="hero-stats-row">
+          <div class="hero-stat-pill">
+            <span class="icon">🔥</span>
+            <div class="stat-info">
+              <span class="val" id="hero-streak-val">0</span>
+              <span class="label">Streak</span>
+            </div>
+          </div>
+          <div class="hero-stat-pill">
+            <span class="icon">⭐</span>
+            <div class="stat-info">
+              <span class="val" id="hero-xp-val">0</span>
+              <span class="label">XP</span>
+            </div>
+          </div>
+          <div class="hero-stat-pill">
+            <span class="icon">🏆</span>
+            <div class="stat-info">
+              <span class="val" id="hero-rank-val">#1</span>
+              <span class="label">Rank</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prominent CTAs -->
+        <div class="hero-cta-group">
+          <button class="btn-hero-play" id="hero-play-btn">
+            <span>⚡ PLAY NOW</span>
+          </button>
+          <button class="btn-hero-secondary" id="hero-challenge-btn">
+            <span>🔥 Today's Challenge</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 2. TODAY'S CHALLENGE CARD -->
+      <section class="event-challenge-hero-card">
+        <div class="event-challenge-box">
+          <div class="challenge-content-left">
+            <div class="event-challenge-header">
+              <span class="event-challenge-pill">TODAY'S CHALLENGE</span>
+              <span class="event-edition-badge">Day 2 Edition</span>
+            </div>
+            <h3 class="challenge-main-title">Can you solve 10 tricky puzzles?</h3>
+            <p class="challenge-main-desc">10 curated puzzles across all genres. Beat the clock and take the campus crown.</p>
+
+            <div class="challenge-specs-row">
+              <span class="challenge-spec-tag">10 Questions</span>
+              <span class="challenge-spec-tag">⏱ 5 Minutes</span>
+              <span class="challenge-spec-tag">⭐ +300 XP</span>
+            </div>
+          </div>
+
+          <button class="btn-start-challenge" id="start-daily-challenge-btn">
+            START CHALLENGE 🔥
+          </button>
+        </div>
+      </section>
+
+      <!-- 2.5. DAILY BRAIN BOSS RAID CHALLENGE CARD -->
+      <section class="brain-boss-hero-section">
+        <div class="brain-boss-box" id="brain-boss-card">
+          <div class="boss-card-content">
+            <div class="boss-header-strip">
+              <span class="boss-badge-pill">👑 DAILY BOSS RAID</span>
+              <span class="boss-flame-tag">🔥 EXTREME CHALLENGE</span>
+            </div>
+
+            <h2 class="boss-headline">👑 BRAIN BOSS HAS ARRIVED</h2>
+            <p class="boss-sub-tagline">Only the sharpest minds can crack this.</p>
+            <p class="boss-active-name" id="boss-active-name">Today's Opponent: <strong>Cerebrus, The Logic Architect</strong></p>
+
+            <div class="boss-specs-row">
+              <span class="boss-spec-chip">🧩 1 Expert Puzzle</span>
+              <span class="boss-spec-chip">⏱ 90 Seconds</span>
+              <span class="boss-spec-chip reward-chip">🏆 Reward: 500 XP</span>
+              <span class="boss-spec-chip badge-chip">🗡️ Boss Slayer Badge</span>
+            </div>
+          </div>
+
+          <div class="boss-action-col">
+            <button class="btn-challenge-boss" id="btn-challenge-boss">
+              CHALLENGE THE BOSS ⚔️
+            </button>
+            <span class="boss-cooldown-text" id="boss-cooldown-text">New Boss Arrives Daily</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. FUN GAME MODES GRID (QUICK PLAY MINI-GAMES) -->
+      <section class="modes-section">
+        <div class="section-header-row">
+          <div>
+            <h2 class="section-header-title">🎮 Quick Play Mini-Games</h2>
+            <span class="section-header-sub">Fast, fun 10-question challenges built for quick breaks</span>
+          </div>
+        </div>
+
+        <div class="modes-grid" id="modes-grid">
+          <!-- Mini-Game 1: Brain Teaser -->
+          <div class="mode-card" data-mode="brain_teaser" style="--mode-color: #8B5CF6;">
+            <div class="mode-top-row">
+              <div class="mode-icon-box">🧩</div>
+              <span class="mode-pill-tag">Tricky</span>
+            </div>
+            <h3 class="mode-title">Brain Teaser</h3>
+            <p class="mode-desc">Short tricky questions, clock angles and witty lateral riddles.</p>
+            <div class="mode-meta-specs">
+              <span class="mode-spec-chip">⏱ 2–3 min</span>
+              <span class="mode-spec-chip">⚡ Medium</span>
+              <span class="mode-spec-chip reward-chip">⭐ +150 XP</span>
+            </div>
+            <button class="mode-play-btn">Play Teaser →</button>
+          </div>
+
+          <!-- Mini-Game 2: Speed Run -->
+          <div class="mode-card" data-mode="speed_run" style="--mode-color: #FF6F61;">
+            <div class="mode-top-row">
+              <div class="mode-icon-box">⚡</div>
+              <span class="mode-pill-tag" style="background: rgba(255,111,97,0.2); color:#FF6F61;">Rapid Blitz</span>
+            </div>
+            <h3 class="mode-title">Speed Run</h3>
+            <p class="mode-desc">How fast can your brain fire? Combos build fast under the clock!</p>
+            <div class="mode-meta-specs">
+              <span class="mode-spec-chip">⏱ 1–2 min</span>
+              <span class="mode-spec-chip">⚡ Fast</span>
+              <span class="mode-spec-chip reward-chip">⭐ +200 XP</span>
+            </div>
+            <button class="mode-play-btn">Start Blitz →</button>
+          </div>
+
+          <!-- Mini-Game 3: Detective Mode -->
+          <div class="mode-card" data-mode="detective" style="--mode-color: #06B6D4;">
+            <div class="mode-top-row">
+              <div class="mode-icon-box">🕵️</div>
+              <span class="mode-pill-tag">Mystery Clues</span>
+            </div>
+            <h3 class="mode-title">Detective Mode</h3>
+            <p class="mode-desc">Crack blood relations, seating clues & deductive puzzles.</p>
+            <div class="mode-meta-specs">
+              <span class="mode-spec-chip">⏱ 3–4 min</span>
+              <span class="mode-spec-chip">⚡ Hard</span>
+              <span class="mode-spec-chip reward-chip">⭐ +250 XP</span>
+            </div>
+            <button class="mode-play-btn">Investigate →</button>
+          </div>
+
+          <!-- Mini-Game 4: Pattern Rush -->
+          <div class="mode-card" data-mode="what_next" style="--mode-color: #F6C453;">
+            <div class="mode-top-row">
+              <div class="mode-icon-box">🔮</div>
+              <span class="mode-pill-tag">Visual Sequence</span>
+            </div>
+            <h3 class="mode-title">Pattern Rush</h3>
+            <p class="mode-desc">Number sequences, rotating figures and 3x3 visual matrices.</p>
+            <div class="mode-meta-specs">
+              <span class="mode-spec-chip">⏱ 2–3 min</span>
+              <span class="mode-spec-chip">⚡ Medium</span>
+              <span class="mode-spec-chip reward-chip">⭐ +180 XP</span>
+            </div>
+            <button class="mode-play-btn">Solve Pattern →</button>
+          </div>
+
+          <!-- Mini-Game 5: Odd One Out -->
+          <div class="mode-card" data-mode="odds_ends" style="--mode-color: #10B981;">
+            <div class="mode-top-row">
+              <div class="mode-icon-box">🎯</div>
+              <span class="mode-pill-tag">Spot It</span>
+            </div>
+            <h3 class="mode-title">Odd One Out</h3>
+            <p class="mode-desc">Find the single shape, word or number that breaks the rule.</p>
+            <div class="mode-meta-specs">
+              <span class="mode-spec-chip">⏱ 1–2 min</span>
+              <span class="mode-spec-chip">⚡ Easy</span>
+              <span class="mode-spec-chip reward-chip">⭐ +120 XP</span>
+            </div>
+            <button class="mode-play-btn">Find Odd One →</button>
+          </div>
+
+          <!-- Mini-Game 6: Logic Battle -->
+          <div class="mode-card" data-mode="puzzle_box" style="--mode-color: #EC4899;">
+            <div class="mode-top-row">
+              <div class="mode-icon-box">🧠</div>
+              <span class="mode-pill-tag">Paradoxes</span>
+            </div>
+            <h3 class="mode-title">Logic Battle</h3>
+            <p class="mode-desc">Truth-teller vs liar paradoxes, balance scales and match puzzles.</p>
+            <div class="mode-meta-specs">
+              <span class="mode-spec-chip">⏱ 2–3 min</span>
+              <span class="mode-spec-chip">⚡ Medium</span>
+              <span class="mode-spec-chip reward-chip">⭐ +200 XP</span>
+            </div>
+            <button class="mode-play-btn">Enter Battle →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. MYSTERY VAULT & FRIEND DUEL DUAL ROW -->
+      <section class="arcade-dual-grid">
+        <!-- Mystery Unlockable Card -->
+        <div class="mystery-puzzle-card" id="mystery-puzzle-card">
+          <div class="mystery-card-left">
+            <div class="mystery-icon-box">🔒</div>
+            <div class="mystery-info">
+              <div class="mystery-badge-row">
+                <span class="mystery-tag">CAMPUS VAULT</span>
+                <span class="mystery-reward-tag">⭐ +500 XP BONUS</span>
+              </div>
+              <h3 class="mystery-title">MYSTERY PUZZLE</h3>
+              <p class="mystery-desc">Something tricky is waiting in the vault... Can you crack it?</p>
+            </div>
+          </div>
+          <button class="btn-mystery-unlock" id="mystery-unlock-btn">
+            UNLOCK 🔓
+          </button>
+        </div>
+
+        <!-- Friend Duel Box (1v1 Real-Time Battle Hub) -->
+        <div class="friend-duel-box">
+          <div>
+            <div class="event-challenge-header">
+              <span class="event-challenge-pill" style="background:#06B6D4; color:#0E0A20;">BRAIN DUEL</span>
+              <span style="font-size:0.8rem; color:#67E8F9; font-weight:700;">1v1 Real-Time Battle</span>
+            </div>
+            <h3>Challenge Your Friend</h3>
+            <p>Create a private room or enter a battle code to play identical expert puzzles in real time.</p>
+
+            <!-- Quick Action Row -->
+            <div style="display:flex; flex-direction:column; gap:0.75rem; margin-top:0.75rem;">
+              <button class="btn-friend-duel" id="btn-dash-create-battle" style="width:100%; justify-content:center; padding:0.75rem 1.25rem;">
+                ⚔️ CREATE BATTLE ROOM
+              </button>
+
+              <div style="display:flex; gap:0.5rem; align-items:center;">
+                <input 
+                  type="text" 
+                  id="dash-battle-code-input" 
+                  placeholder="Enter Code (e.g. BRAIN-9841)" 
+                  style="flex:1; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); border-radius:10px; padding:0.6rem 0.85rem; color:#67E8F9; font-family:'JetBrains Mono', monospace; font-size:0.85rem; font-weight:700; text-transform:uppercase;"
+                >
+                <button class="btn-copy-code" id="btn-dash-join-battle" style="padding:0.6rem 1rem; font-size:0.85rem; font-weight:800; background:#06B6D4; color:#0A0618; border:none; cursor:pointer;">
+                  JOIN ⚡
+                </button>
+              </div>
+              <div id="dash-duel-status-msg" class="hidden" style="font-size:0.8rem; color:#FF6F61; font-weight:600;"></div>
+            </div>
+          </div>
+
+          <button class="btn-copy-code" id="dash-open-duel-modal-btn" style="margin-top:0.75rem; align-self:flex-start; font-size:0.8rem; background:transparent; border:none; color:var(--text-secondary); cursor:pointer; text-decoration:underline;">
+            Open Battle Room Hub →
+          </button>
+        </div>
+      </section>
+
+      <!-- 5. PERSONAL PERFORMANCE STATS SECTION (REAL USER STATS) -->
+      <section class="arcade-stats-section" style="margin-top: 1.5rem;">
+        <div class="section-header-row" style="margin-bottom: 1rem;">
+          <div>
+            <h2 class="section-header-title">📊 Your Event Stats</h2>
+            <span class="section-header-sub">Your personal records & streak</span>
+          </div>
+          <button class="btn-copy-code" id="dash-open-lb-btn" style="padding: 0.5rem 1.15rem; font-size: 0.85rem; background: rgba(246, 196, 83, 0.15); border-color: #F6C453; color: #F6C453; font-weight: 700; cursor: pointer;">
+            🏆 View Live Leaderboard →
+          </button>
+        </div>
+
+        <!-- Personal Score Showcase -->
+        <div class="personal-stats-grid">
+          <div class="personal-stat-card">
+            <span class="p-val" id="stat-best-score">0</span>
+            <span class="p-lbl">🏆 Best Score</span>
+          </div>
+          <div class="personal-stat-card">
+            <span class="p-val" id="stat-best-combo">0 🔥</span>
+            <span class="p-lbl">🔥 Best Combo</span>
+          </div>
+          <div class="personal-stat-card">
+            <span class="p-val" id="stat-fastest">—</span>
+            <span class="p-lbl">⚡ Fastest Answer</span>
+          </div>
+          <div class="personal-stat-card">
+            <span class="p-val" id="stat-puzzles-solved">0</span>
+            <span class="p-lbl">🧩 Puzzles Solved</span>
+          </div>
+          <div class="personal-stat-card">
+            <span class="p-val" id="stat-fest-streak">0 Days</span>
+            <span class="p-lbl">🔥 Current Streak</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==========================================
+       VIEW 3: LIVE QUESTION ARENA (PLAYING SCREEN & GAME HUD)
+       ========================================== -->
+  <div class="app-stage-view hidden" id="game-play-view">
+    <!-- Live Header with HUD -->
+    <header class="arena-header game-hud-header">
+      <div class="header-left">
+        <button class="mode-pill" id="exit-game-btn" title="Back to Arcade Dashboard">
+          ← Dashboard
+        </button>
+        <button class="mode-pill" id="game-exit-home-btn" title="Exit to Dojo Home" style="margin-left: 6px;">
+          🏠 Home
+        </button>
+        <div class="hud-brand-tag">
+          <span class="hud-brand-icon">🧠</span>
+          <span class="hud-brand-title">BRAIN BATTLE</span>
+        </div>
+      </div>
+
+      <div class="header-hud">
+        <!-- Combo Counter Badge -->
+        <div class="combo-indicator" id="live-combo-badge">
+          <span>🔥</span> <span id="live-combo-text">×1 Combo</span>
+        </div>
+
+        <!-- Live Score -->
+        <div class="hud-item points-hud" title="Current Round Score">
+          <span class="hud-icon">⭐</span>
+          <span class="hud-value" id="live-round-score">0 XP</span>
+        </div>
+
+        <!-- Live Timer Display -->
+        <div class="hud-timer-pill" id="timer-container" title="Timer Countdown">
+          <span class="timer-clock-icon">⏱</span>
+          <span class="timer-formatted-text" id="timer-number">01:00</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="arena-main">
+      <!-- Challenge Progress Bar HUD -->
+      <div class="challenge-progress-hud">
+        <div class="challenge-progress-top">
+          <div class="challenge-step-badge" id="question-step-tracker">
+            Challenge 01 / 10
+          </div>
+          <div class="challenge-time-remaining">
+            <span>TIME REMAINING:</span> <strong id="challenge-timer-display">01:00</strong>
+          </div>
+        </div>
+        <div class="challenge-progress-track">
+          <div class="challenge-progress-bar" id="challenge-progress-bar" style="width: 10%;"></div>
+        </div>
+      </div>
+
+      <!-- Surprise Event Live Banner -->
+      <div class="surprise-event-banner hidden" id="surprise-banner">
+        <span>🎁 BONUS ROUND! Double XP for this tricky puzzle!</span>
+      </div>
+
+      <div class="arena-play-area">
+        <!-- Question Meta Row -->
+        <div class="question-header-bar">
+          <div class="category-indicator">
+            <span class="category-pill" id="category-pill">🧩 BRIDGE CHALLENGE</span>
+            <span class="subcategory-tag" id="subcategory-tag">Logic Puzzle</span>
+          </div>
+
+          <div class="adaptive-badge" id="adaptive-difficulty-badge">
+            <span class="diff-dot diff-medium"></span>
+            <span class="diff-text" id="diff-text">Medium</span>
+          </div>
+        </div>
+
+        <!-- Question Card Container -->
+        <article class="question-card" id="question-card">
+          <!-- Problem Statement & Clues Container (Essential for Detective, Seating, Syllogisms) -->
+          <div class="question-statement-box hidden" id="question-statement-box"></div>
+
+          <!-- Main Question Prompt (Comfortable Inter typography) -->
+          <h2 class="question-prompt" id="question-prompt">
+            Loading your puzzle...
+          </h2>
+
+          <!-- Interactive / Visual Stage (SVG Figures, Number tiles, Matrices) -->
+          <div class="question-visual-stage hidden" id="question-visual-stage"></div>
+
+          <!-- Multiple Choice Options (A, B, C, D) -->
+          <div class="options-grid" id="options-grid"></div>
+
+          <!-- Hint Bubble (Revealed when Hint power-up is used) -->
+          <div class="hint-display-box hidden" id="hint-box">
+            <span>💡 <strong>Hint:</strong> <span id="hint-text">Look closely at the rotation.</span></span>
+          </div>
+
+          <!-- Fast, Entertaining Solution Feedback & Prominent NEXT PUZZLE BUTTON -->
+          <div class="solution-drawer hidden" id="solution-drawer">
+            <div class="solution-header">
+              <div class="result-headline-group">
+                <div class="result-status-icon" id="result-status-icon">✓</div>
+                <div>
+                  <h3 class="result-headline" id="result-headline">🎉 PERFECT!</h3>
+                  <p class="result-subtext" id="result-subtext">+50 XP • 🔥 COMBO ×2</p>
+                </div>
+              </div>
+              <div class="score-breakdown-tags" id="score-breakdown">
+                <span class="score-tag base-tag" id="tag-base">+50 XP</span>
+                <span class="score-tag streak-tag" id="tag-streak">🔥 ×2 Combo</span>
+              </div>
+            </div>
+
+            <!-- Strategy & Step-by-Step Breakdown (Revealed only AFTER answer) -->
+            <div class="explanation-body">
+              <div class="explanation-title-row">
+                <span>💡 HOW IT WORKS</span>
+              </div>
+              <div class="question-context-box hidden" id="question-context-box" style="margin-bottom: 0.85rem;"></div>
+              <div class="explanation-content" id="explanation-text"></div>
+            </div>
+
+            <div class="solution-actions" style="margin-top: 1.15rem;">
+              <button class="primary-action-btn full-w btn-next-puzzle" id="next-question-btn">
+                <span>⚡ NEXT PUZZLE</span>
+                <span class="btn-arrow-anim">→</span>
+                <kbd class="btn-kbd">Space</kbd>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Tactical Power-Ups Tray -->
+        <div class="powerups-tray">
+          <span class="tray-label">POWER-UPS:</span>
+          <div class="powerup-buttons">
+            <button class="powerup-btn" id="powerup-5050" title="Eliminate two wrong choices">
+              <span class="pu-icon">✂️</span>
+              <span class="pu-name">50:50</span>
+              <span class="pu-count" id="count-5050">3</span>
+            </button>
+            <button class="powerup-btn" id="powerup-time" title="+20 Seconds to timer">
+              <span class="pu-icon">⏱</span>
+              <span class="pu-name">+20 SEC</span>
+              <span class="pu-count" id="count-time">3</span>
+            </button>
+            <button class="powerup-btn" id="powerup-hint" title="Get a small clue">
+              <span class="pu-icon">💡</span>
+              <span class="pu-name">HINT</span>
+              <span class="pu-count" id="count-hint">3</span>
+            </button>
+            <button class="powerup-btn" id="powerup-skip" title="Skip to next puzzle">
+              <span class="pu-icon">⏭</span>
+              <span class="pu-name">SKIP</span>
+              <span class="pu-count" id="count-skip">2</span>
+            </button>
+            <button class="powerup-btn next-tray-btn hidden" id="tray-next-btn" style="background:linear-gradient(135deg, #FF6F61 0%, #FF855D 100%); color:#fff; border:none; font-weight:700; padding: 0.45rem 1.2rem; margin-left:auto;">
+              <span>⚡ NEXT PUZZLE →</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ==========================================
+       VIEW 4: "ONE MORE GAME" LOOP (RESULTS SCREEN)
+       ========================================== -->
+  <div class="app-stage-view hidden" id="game-over-view">
+    <header class="arena-header">
+      <div class="header-left">
+        <button class="mode-pill" id="res-back-to-dash-btn" title="Back to Arcade Dashboard" style="cursor:pointer;">
+          ← Dashboard
+        </button>
+        <button class="mode-pill" id="res-landing-home-btn" title="Exit to Dojo Home Screen" style="cursor:pointer; margin-left:6px;">
+          🏠 Dojo Home
+        </button>
+        <div class="brand-logo" id="res-brand-logo-btn" style="cursor:pointer;" title="Dojo Home">
+          <div class="logo-mark">🥋</div>
+          <div class="logo-text">
+            <span class="logo-main">DIMAAG</span>
+            <span class="logo-sub">ARCADE</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-hud">
+        <span style="color:#F6C453; font-weight:700;">Round Complete!</span>
+      </div>
+    </header>
+
+    <main class="arena-main">
+      <div class="game-over-screen">
+        <div style="font-size: 3.2rem; margin-bottom: 0.5rem;">🎉</div>
+        <h2 class="results-headline">NICE PLAY!</h2>
+        <p class="results-subtext">Your brain is warmed up and sharper than ever.</p>
+
+        <div class="results-stats-row">
+          <div class="results-stat-box">
+            <span class="r-val" id="res-score">+280 XP</span>
+            <span class="r-lbl">Score Earned</span>
+          </div>
+          <div class="results-stat-box">
+            <span class="r-val" id="res-combo">6 🔥</span>
+            <span class="r-lbl">Best Combo</span>
+          </div>
+          <div class="results-stat-box">
+            <span class="r-val" id="res-rank">#4</span>
+            <span class="r-lbl">Event Rank</span>
+          </div>
+        </div>
+
+        <!-- Duel Comparison Banner (Shown during friend duel mode) -->
+        <div class="duel-result-card hidden" id="res-duel-card" style="background: rgba(6,182,212,0.12); border: 1.5px solid #06B6D4; border-radius: 16px; padding: 1.25rem; margin-bottom: 1.25rem; text-align: center;">
+          <div style="font-size: 2rem;" id="duel-outcome-icon">⚔️</div>
+          <h3 style="color:#67E8F9; font-weight:700; font-size:1.25rem; margin:0.35rem 0;" id="duel-outcome-title">DUEL SCORE SET!</h3>
+          <p style="color:var(--text-secondary); font-size:0.92rem;" id="duel-outcome-desc">You set a high score. Challenge your friend to beat it!</p>
+          <div style="display:flex; justify-content:center; gap:0.6rem; margin-top:0.85rem;">
+            <button class="btn-copy-code" id="duel-share-btn" style="padding:0.6rem 1.4rem; font-size:0.9rem; background:linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%); color:#fff;">
+              📋 Copy Challenge Link
+            </button>
+          </div>
+        </div>
+
+        <div class="results-actions-grid">
+          <button class="btn-game-restart" id="res-play-again-btn">
+            ⚡ PLAY AGAIN
+          </button>
+          <button class="btn-game-next" id="res-next-challenge-btn">
+            🔥 NEXT CHALLENGE
+          </button>
+          <button class="btn-game-lb" id="res-view-lb-btn">
+            🏆 LEADERBOARD
+          </button>
+          <button class="btn-game-lb" id="res-duel-friend-btn">
+            👥 CHALLENGE FRIEND
+          </button>
+          <button class="btn-game-lb" id="res-home-btn" style="grid-column: 1 / -1; justify-content: center; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); font-size: 0.95rem; font-weight: 600; color: #FFFFFF; padding: 0.85rem; margin-top: 0.25rem; cursor: pointer;">
+            ← Back to Dashboard 🎮
+          </button>
+          <button class="btn-game-lb" id="res-exit-home-bottom-btn" style="grid-column: 1 / -1; justify-content: center; background: rgba(123, 97, 255, 0.14); border: 1px solid rgba(123, 97, 255, 0.4); font-size: 0.95rem; font-weight: 700; color: #C4B5FD; padding: 0.85rem; margin-top: 0.25rem; cursor: pointer;">
+            🏠 Exit to Dojo Home (Switch Student)
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==========================================
+       MODAL 1: CAMPUS EVENT LEADERBOARD MODAL
+       ========================================== -->
+  <div class="modal-overlay hidden" id="leaderboard-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge">🏆</div>
+          <div>
+            <h3>EVENT BRAIN BATTLE</h3>
+            <p>Live rankings for visiting students & campus warriors</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="close-leaderboard-btn">&times;</button>
+      </div>
+
+      <div class="leaderboard-content" id="modal-leaderboard-container">
+        <!-- Injected dynamically via LeaderboardManager -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 2: REAL-TIME 1v1 FRIEND DUEL MODAL
+       ========================================== -->
+  <div class="modal-overlay hidden" id="friend-duel-modal">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge" style="background:#06B6D4; color:#0A0618;">⚔️</div>
+          <div>
+            <h3>BRAIN DUEL (1v1 MULTIPLAYER)</h3>
+            <p>Real-Time Synchronized Battle • 10 Expert Questions</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="close-duel-modal-btn">&times;</button>
+      </div>
+
+      <!-- State A: Create or Join Hub -->
+      <div id="duel-modal-create-section" style="padding: 1.5rem 0; display:flex; flex-direction:column; gap:1.5rem;">
+        <!-- Option 1: Create a room -->
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:1.25rem; text-align:center;">
+          <h4 style="font-size:1.1rem; color:#FFFFFF; margin-bottom:0.35rem;">Host a Real-Time Duel</h4>
+          <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:1rem;">Generate a unique room code and challenge any friend on any device.</p>
+          <button class="btn-quick-play" id="modal-create-battle-btn" type="button" style="width:100%; justify-content:center; padding:0.8rem 1.4rem; font-size:1rem; font-weight:800; background:linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%); color:#fff; box-shadow:0 0 20px rgba(6,182,212,0.4); cursor:pointer;">
+            ⚔️ CREATE BATTLE ROOM
+          </button>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <div style="flex:1; height:1px; background:rgba(255,255,255,0.1);"></div>
+          <span style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase;">OR JOIN WITH CODE</span>
+          <div style="flex:1; height:1px; background:rgba(255,255,255,0.1);"></div>
+        </div>
+
+        <!-- Option 2: Join a room -->
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:1.25rem;">
+          <label style="display:block; font-size:0.8rem; font-weight:800; color:var(--text-secondary); text-transform:uppercase; margin-bottom:0.5rem;">
+            Enter Battle Code
+          </label>
+          <div style="display:flex; gap:0.5rem;">
+            <input 
+              type="text" 
+              id="modal-join-code-input" 
+              placeholder="e.g. BRAIN-9841" 
+              style="flex:1; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); border-radius:10px; padding:0.7rem 0.9rem; color:#67E8F9; font-family:'JetBrains Mono', monospace; font-size:1rem; font-weight:800; text-transform:uppercase;"
+            >
+            <button class="btn-quick-play" id="modal-join-battle-btn" type="button" style="padding:0.7rem 1.35rem; font-size:0.9rem; font-weight:800; background:#06B6D4; color:#0A0618; border:none; cursor:pointer;">
+              JOIN BATTLE ⚡
+            </button>
+          </div>
+        </div>
+
+        <div id="modal-duel-status-msg" class="hidden" style="font-size:0.85rem; color:#FF6F61; font-weight:600; text-align:center; background:rgba(255,111,97,0.1); padding:0.6rem; border-radius:8px;"></div>
+      </div>
+
+      <!-- State B: Waiting Room & Synchronized Countdown -->
+      <div id="duel-modal-waiting-section" class="hidden" style="padding: 1.5rem 0; display:flex; flex-direction:column; gap:1.25rem; text-align:center;">
+        <div style="display:inline-flex; align-items:center; gap:0.5rem; justify-content:center; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); padding:0.35rem 0.85rem; border-radius:20px; color:#10B981; font-size:0.8rem; font-weight:700; align-self:center;">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10B981; animation:pulse-glow 1.5s infinite;"></span>
+          <span>Room Active • Waiting for Opponent</span>
+        </div>
+
+        <h3 style="font-size:1.4rem; color:#FFFFFF; margin:0.25rem 0 0.1rem;">🧠 BRAIN DUEL</h3>
+        <p style="color:var(--text-secondary); font-size:0.88rem; margin:0;">Share this code with your friend to join:</p>
+
+        <!-- Room Code Display -->
+        <div style="background:rgba(0,0,0,0.4); border:2px dashed #06B6D4; border-radius:14px; padding:1rem; margin:0.5rem 0;">
+          <div style="font-family:'JetBrains Mono', monospace; font-size:2.2rem; font-weight:900; color:#67E8F9; letter-spacing:3px;" id="waiting-room-code-display">
+            BRAIN-9841
+          </div>
+          <div style="display:flex; justify-content:center; gap:0.6rem; margin-top:0.85rem;">
+            <button class="btn-copy-code" id="btn-waiting-copy-code" type="button" style="padding:0.5rem 1rem; font-size:0.85rem; font-weight:700; cursor:pointer;">
+              📋 Copy Code
+            </button>
+            <button class="btn-copy-code" id="btn-waiting-copy-link" type="button" style="padding:0.5rem 1rem; font-size:0.85rem; font-weight:700; cursor:pointer;">
+              🔗 Copy Invite Link
+            </button>
+          </div>
+          <div id="waiting-copy-notice" class="hidden" style="color:#10B981; font-size:0.8rem; margin-top:0.5rem; font-weight:600;"></div>
+        </div>
+
+        <!-- Real-Time Players Presence List -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; text-align:left;">
+          <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:0.85rem;">
+            <div style="font-size:0.75rem; color:var(--text-muted); font-weight:800; text-transform:uppercase;">PLAYER 1</div>
+            <div style="font-size:1rem; font-weight:700; color:#FFFFFF; margin:0.25rem 0;" id="waiting-p1-name">You</div>
+            <div style="font-size:0.8rem; color:#10B981; font-weight:700;">🟢 Ready</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:0.85rem;">
+            <div style="font-size:0.75rem; color:var(--text-muted); font-weight:800; text-transform:uppercase;">PLAYER 2</div>
+            <div style="font-size:1rem; font-weight:700; color:#FFFFFF; margin:0.25rem 0;" id="waiting-p2-name">Waiting...</div>
+            <div style="font-size:0.8rem; color:#F59E0B; font-weight:700;" id="waiting-p2-status">⏳ Waiting for opponent...</div>
+          </div>
+        </div>
+
+        <!-- Opponent Found & Synchronized Countdown Overlay -->
+        <div id="opponent-found-banner" class="hidden" style="background:linear-gradient(135deg, rgba(6,182,212,0.2) 0%, rgba(59,130,246,0.2) 100%); border:1px solid #06B6D4; border-radius:12px; padding:1rem; margin-top:0.5rem;">
+          <!-- Dynamically filled on opponent join -->
+        </div>
+
+        <div id="waiting-countdown-digits" class="hidden" style="font-family:'Space Grotesk', sans-serif; font-size:3.5rem; font-weight:900; color:#F6C453; text-shadow:0 0 30px rgba(246,196,83,0.8); transition:transform 0.2s ease;">
+          3
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 3: REWARDS & EVENT BADGES MODAL
+       ========================================== -->
+  <div class="modal-overlay hidden" id="rewards-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge" style="background:#F6C453; color:#120A20;">🎁</div>
+          <div>
+            <h3>Campus Event Rewards & Badges</h3>
+            <p>Earn XP, Coins and unlock tournament honors</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="close-rewards-btn">&times;</button>
+      </div>
+
+      <div class="stats-content">
+        <div class="stats-overview-grid" style="margin-bottom: 1.5rem;">
+          <div class="stat-card">
+            <span class="stat-num" id="rew-xp-val">0</span>
+            <span class="stat-name">⭐ Total XP</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num" id="rew-coins-val">0</span>
+            <span class="stat-name">🪙 Coins</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num" id="rew-streak-val">0</span>
+            <span class="stat-name">🔥 Streak</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num" id="rew-rank-val">#1</span>
+            <span class="stat-name">🏆 Event Rank</span>
+          </div>
+        </div>
+
+        <h4 style="font-size:1rem; font-weight:800; color:#FFFFFF; margin-bottom:0.75rem;">
+          Event Badges & Achievements
+        </h4>
+        <div class="badges-grid" id="modal-badges-grid">
+          <!-- Injected dynamically via gamification engine -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 4: LEVEL-UP CELEBRATION MODAL
+       ========================================== -->
+  <div class="modal-overlay hidden" id="levelup-modal">
+    <div class="levelup-dialog">
+      <div class="levelup-badge-crest" id="modal-crest">⚡</div>
+      <div class="levelup-tag">PROMOTED TO NEXT BELT</div>
+      <h2 class="levelup-rank" id="modal-new-tier">CONTENDER</h2>
+      <p class="levelup-desc" id="modal-tier-desc">Your reasoning speed and accuracy have placed you in the upper echelon of thinkers.</p>
+      <div class="levelup-rewards">
+        <div class="reward-pill">+300 Bonus XP</div>
+        <div class="reward-pill">+25 Coins</div>
+      </div>
+      <button class="primary-action-btn full-w" id="levelup-continue-btn">Claim & Continue</button>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 5: BOSS SLAYER VICTORY CELEBRATION MODAL
+       ========================================== -->
+  <div class="modal-overlay hidden" id="boss-slayer-modal">
+    <div class="levelup-dialog" style="border: 2px solid #EC4899; box-shadow: 0 0 65px rgba(236,72,153,0.65); max-width: 480px;">
+      <div class="levelup-badge-crest" style="background: linear-gradient(135deg, #EC4899, #F59E0B); box-shadow: 0 0 35px rgba(236,72,153,0.7);">🗡️</div>
+      <div class="levelup-tag" style="color: #F472B6; letter-spacing: 0.12em;">👑 SUPREME VICTORY • BOSS RAID CONQUERED</div>
+      <h2 class="levelup-rank" style="color: #FFFFFF; font-size: 1.85rem; margin-bottom: 0.35rem;">BOSS SLAYER</h2>
+      <p class="levelup-desc" style="margin-bottom: 1.25rem;">You cracked the master-level brain challenge in under 90 seconds! The exclusive <strong>Boss Slayer</strong> badge is now yours.</p>
+      <div class="levelup-rewards" style="margin-bottom: 1.6rem;">
+        <div class="reward-pill" style="border-color: #F59E0B; color: #FDE68A;">⭐ +500 XP</div>
+        <div class="reward-pill" style="border-color: #EC4899; color: #FBCFE8;">🗡️ Boss Slayer Badge</div>
+        <div class="reward-pill" style="border-color: #10B981; color: #A7F3D0;">🪙 +50 Coins</div>
+      </div>
+      <button class="primary-action-btn full-w" id="boss-slayer-continue-btn" style="background: linear-gradient(135deg, #EC4899 0%, #E11D48 100%); box-shadow: 0 0 25px rgba(236,72,153,0.55); font-weight: 800; cursor: pointer;">
+        Claim Boss Slayer Badge 🏆
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       VIEW 4: REAL-TIME 1v1 MULTIPLAYER ARENA
+       ========================================== -->
+  <div class="app-stage-view hidden" id="multiplayer-game-view">
+    <!-- Live Disconnect Warning Banner -->
+    <div id="mp-disconnect-banner" class="hidden" style="background:rgba(239,68,68,0.25); border-bottom:1px solid #EF4444; color:#FCA5A5; padding:0.6rem 1.25rem; text-align:center; font-size:0.88rem; font-weight:700;">
+      <span id="mp-disconnect-msg">⚠️ Connection lost. Waiting for reconnect (30s)...</span>
+    </div>
+
+    <!-- Multiplayer Header & Real-Time Dual HUD -->
+    <header class="arena-header mp-header" style="padding:0.75rem 1.5rem; border-bottom:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center;">
+      <div class="header-left">
+        <button class="mode-pill" id="btn-mp-exit-duel" title="Exit Battle">
+          ← Exit Duel
+        </button>
+        <div class="hud-brand-tag" style="display:flex; align-items:center; gap:0.4rem; margin-left:0.75rem;">
+          <span class="hud-brand-icon">⚔️</span>
+          <span class="hud-brand-title" style="font-weight:900; color:#67E8F9; font-size:1rem; letter-spacing:1px;">BRAIN DUEL</span>
+        </div>
+      </div>
+
+      <div class="mp-center-hud" style="display:flex; flex-direction:column; align-items:center; gap:0.25rem;">
+        <span class="mp-q-step" id="mp-q-index" style="font-size:0.85rem; font-weight:700; color:#FFFFFF;">Question 1 / 10</span>
+        <div class="mp-progress-track" style="width:160px; height:6px; background:rgba(255,255,255,0.1); border-radius:10px; overflow:hidden;">
+          <div class="mp-progress-fill" id="mp-progress-bar" style="width: 10%; height:100%; background:linear-gradient(90deg, #06B6D4, #3B82F6); transition:width 0.3s ease;"></div>
+        </div>
+      </div>
+
+      <div class="mp-right-hud">
+        <div class="mp-timer-display" id="mp-timer-num" style="font-family:'JetBrains Mono', monospace; font-size:1.15rem; font-weight:900; color:#67E8F9; background:rgba(0,0,0,0.3); border:1px solid rgba(6,182,212,0.3); padding:0.35rem 0.85rem; border-radius:10px;">⏱ 00:45</div>
+      </div>
+    </header>
+
+    <!-- Head-to-Head Versus Match Banner -->
+    <section class="mp-versus-strip" style="background:rgba(18,10,32,0.85); border-bottom:1px solid rgba(255,255,255,0.08); padding:0.85rem 1.5rem; display:flex; justify-content:space-between; align-items:center; max-width:860px; margin:0 auto; border-radius:0 0 16px 16px;">
+      <div class="mp-player-box left" id="mp-p1-box" style="display:flex; align-items:center; gap:0.75rem;">
+        <div class="mp-avatar-circle" style="width:42px; height:42px; border-radius:50%; background:#06B6D4; display:flex; align-items:center; justify-content:center; font-size:1.2rem; box-shadow:0 0 12px rgba(6,182,212,0.4);">👤</div>
+        <div class="mp-player-meta">
+          <div class="mp-name" id="mp-p1-name" style="font-size:0.95rem; font-weight:800; color:#FFFFFF;">You</div>
+          <div class="mp-score" id="mp-p1-score" style="font-size:1.1rem; font-weight:900; color:#F6C453;">0 XP</div>
+        </div>
+        <div class="status-pill thinking" id="mp-p1-status" style="font-size:0.75rem; font-weight:700; padding:0.25rem 0.65rem; border-radius:20px; background:rgba(255,255,255,0.08); color:var(--text-muted);">
+          <span>⏳ Thinking...</span>
+        </div>
+      </div>
+
+      <div class="mp-vs-badge" style="font-family:'Space Grotesk', sans-serif; font-size:1.15rem; font-weight:900; color:#FF6F61; background:rgba(255,111,97,0.15); border:1px solid rgba(255,111,97,0.4); border-radius:50%; width:38px; height:38px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 15px rgba(255,111,97,0.3);">
+        <span>VS</span>
+      </div>
+
+      <div class="mp-player-box right" id="mp-p2-box" style="display:flex; align-items:center; gap:0.75rem; flex-direction:row-reverse;">
+        <div class="mp-avatar-circle" style="width:42px; height:42px; border-radius:50%; background:#EC4899; display:flex; align-items:center; justify-content:center; font-size:1.2rem; box-shadow:0 0 12px rgba(236,72,153,0.4);">👤</div>
+        <div class="mp-player-meta" style="text-align:right;">
+          <div class="mp-name" id="mp-p2-name" style="font-size:0.95rem; font-weight:800; color:#FFFFFF;">Opponent</div>
+          <div class="mp-score" id="mp-p2-score" style="font-size:1.1rem; font-weight:900; color:#F6C453;">0 XP</div>
+        </div>
+        <div class="status-pill thinking" id="mp-p2-status" style="font-size:0.75rem; font-weight:700; padding:0.25rem 0.65rem; border-radius:20px; background:rgba(255,255,255,0.08); color:var(--text-muted);">
+          <span>⏳ Thinking...</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Question Arena Area -->
+    <main class="mp-question-arena" style="max-width:860px; margin:1.5rem auto; padding:0 1rem;">
+      <div class="mp-meta-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+        <span class="mp-category-badge" id="mp-category-pill" style="font-size:0.8rem; font-weight:700; color:#06B6D4; background:rgba(6,182,212,0.12); padding:0.25rem 0.75rem; border-radius:12px; border:1px solid rgba(6,182,212,0.25);">Constraint Puzzle</span>
+        <span class="diff-tag expert" id="mp-diff-badge" style="font-size:0.75rem; font-weight:800; padding:0.2rem 0.65rem; border-radius:8px; background:rgba(236,72,153,0.2); color:#F472B6; border:1px solid rgba(236,72,153,0.4);">EXPERT</span>
+      </div>
+
+      <!-- Question Text Prompt -->
+      <div class="mp-prompt-card" style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:16px; padding:1.5rem; margin-bottom:1.25rem; box-shadow:0 10px 30px rgba(0,0,0,0.3);">
+        <p id="mp-question-text" style="font-size:1.15rem; line-height:1.6; color:#FFFFFF; font-weight:600; margin:0;">
+          Loading synchronized expert puzzle...
+        </p>
+      </div>
+
+      <!-- Interactive 4 Options Grid -->
+      <div class="mp-options-grid" id="mp-options-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:0.85rem;">
+        <!-- Injected dynamically via multiplayer.js -->
+      </div>
+
+      <!-- Round Result & Explanation Splash -->
+      <div id="mp-round-feedback" class="hidden" style="background:rgba(18,10,32,0.95); border:1px solid #3B82F6; border-radius:14px; padding:1.1rem; margin-top:1.25rem; text-align:center;">
+        <div id="mp-feedback-text" style="font-size:1.15rem; font-weight:800; color:#FFFFFF; margin-bottom:0.35rem;">🎉 CORRECT! +140 XP</div>
+        <div id="mp-feedback-sub" style="font-size:0.88rem; color:var(--text-secondary); line-height:1.5;">Explanation will appear here...</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==========================================
+       MODAL 5: MULTIPLAYER 1v1 MATCH RESULT MODAL
+       ========================================== -->
+  <div class="modal-overlay hidden" id="mp-result-modal">
+    <div class="modal-card" style="max-width: 560px; text-align:center;">
+      <div style="font-size: 3rem; margin-bottom: 0.25rem;">🏆</div>
+      <h2 id="mp-res-outcome-title" style="font-size: 1.85rem; font-weight: 900; color: #10B981; margin: 0.25rem 0;">
+        YOU WON! 🎉
+      </h2>
+      <p id="mp-res-outcome-subtitle" style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.25rem;">
+        Outstanding speed and deduction! You crowned the duel.
+      </p>
+
+      <!-- Head-to-Head Comparison Table -->
+      <div class="mp-result-table" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:1rem; margin-bottom:1rem;">
+        <div class="mp-table-header" style="display:grid; grid-template-columns:1fr 1.2fr 1fr; font-size:0.8rem; font-weight:800; color:#FFFFFF; padding-bottom:0.5rem; border-bottom:1px solid rgba(255,255,255,0.1);">
+          <span style="color:#06B6D4;">YOU</span>
+          <span style="color:var(--text-muted);">METRIC</span>
+          <span style="color:#EC4899;">OPPONENT</span>
+        </div>
+
+        <div class="mp-table-row highlight" style="display:grid; grid-template-columns:1fr 1.2fr 1fr; align-items:center; padding:0.6rem 0; border-bottom:1px solid rgba(255,255,255,0.06);">
+          <span id="mp-res-p1-score" style="font-size:1.25rem; font-weight:900; color:#F6C453;">820 XP</span>
+          <span style="font-size:0.8rem; font-weight:700; color:var(--text-secondary);">Final Score</span>
+          <span id="mp-res-p2-score" style="font-size:1.25rem; font-weight:900; color:#F6C453;">760 XP</span>
+        </div>
+
+        <div class="mp-table-row" style="display:grid; grid-template-columns:1fr 1.2fr 1fr; align-items:center; padding:0.55rem 0; border-bottom:1px solid rgba(255,255,255,0.06); font-size:0.9rem; font-weight:700; color:#FFFFFF;">
+          <span id="mp-res-p1-correct">8 / 10</span>
+          <span style="font-size:0.8rem; font-weight:600; color:var(--text-secondary);">Correct Answers</span>
+          <span id="mp-res-p2-correct">7 / 10</span>
+        </div>
+
+        <div class="mp-table-row" style="display:grid; grid-template-columns:1fr 1.2fr 1fr; align-items:center; padding:0.55rem 0; border-bottom:1px solid rgba(255,255,255,0.06); font-size:0.9rem; font-weight:700; color:#FFFFFF;">
+          <span id="mp-res-p1-speed" style="color:#F6C453;">+240 XP</span>
+          <span style="font-size:0.8rem; font-weight:600; color:var(--text-secondary);">Speed Bonus</span>
+          <span id="mp-res-p2-speed" style="color:#F6C453;">+160 XP</span>
+        </div>
+
+        <div class="mp-table-row" style="display:grid; grid-template-columns:1fr 1.2fr 1fr; align-items:center; padding:0.55rem 0; font-size:0.9rem; font-weight:700; color:#FFFFFF;">
+          <span id="mp-res-p1-avgtime">9.4s</span>
+          <span style="font-size:0.8rem; font-weight:600; color:var(--text-secondary);">Avg Response Time</span>
+          <span id="mp-res-p2-avgtime">14.2s</span>
+        </div>
+      </div>
+
+      <div id="mp-rematch-notice" class="hidden" style="color:#F6C453; font-size:0.85rem; font-weight:700; background:rgba(246,196,83,0.12); padding:0.6rem; border-radius:8px; margin:0.75rem 0;">
+        Opponent requested a rematch! Click Rematch to accept.
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display:flex; flex-direction:column; gap:0.65rem; margin-top:1.25rem;">
+        <button class="btn-quick-play" id="btn-mp-rematch" type="button" style="justify-content:center; padding:0.8rem 1.5rem; font-size:1rem; font-weight:800; background:linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%); color:#fff; box-shadow:0 0 20px rgba(6,182,212,0.4); cursor:pointer;">
+          ⚔️ REMATCH
+        </button>
+
+        <div style="display:flex; gap:0.65rem;">
+          <button class="btn-copy-code" id="btn-mp-new-duel" type="button" style="flex:1; justify-content:center; padding:0.65rem; font-size:0.85rem; font-weight:700; cursor:pointer;">
+            👥 Challenge Someone Else
+          </button>
+          <button class="btn-copy-code" id="btn-mp-exit-duel" type="button" style="flex:1; justify-content:center; padding:0.65rem; font-size:0.85rem; font-weight:700; cursor:pointer;">
+            🏠 Arcade Home
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Socket.IO & Multiplayer Controller -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/multiplayer.js"></script>
+
+  <!-- JavaScript Modules -->
+  <script src="js/state.js?v=mongodb_sync_2"></script>
+  <script src="js/audio.js?v=mongodb_sync_2"></script>
+  <script src="js/generators/logical.js?v=mongodb_sync_2"></script>
+  <script src="js/generators/quant.js?v=mongodb_sync_2"></script>
+  <script src="js/generators/abstract.js?v=mongodb_sync_2"></script>
+  <script src="js/generators/critical.js?v=mongodb_sync_2"></script>
+  <script src="js/generators/puzzles.js?v=mongodb_sync_2"></script>
+  <script src="js/generators/boss.js?v=mongodb_sync_2"></script>
+  <script src="js/gamification.js?v=mongodb_sync_2"></script>
+  <script src="js/leaderboard.js?v=mongodb_sync_2"></script>
+  <script src="js/confetti.js?v=mongodb_sync_2"></script>
+  <script src="js/welcome-ceremony.js?v=mongodb_sync_2"></script>
+  <script src="js/app.js?v=mongodb_sync_2"></script>
+</body>
+</html>

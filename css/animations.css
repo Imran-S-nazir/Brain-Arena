@@ -1,0 +1,263 @@
+/* ==========================================================================
+   DIMAAG ARENA — ANIMATIONS & MICRO-INTERACTIONS
+   Subtle, satisfying feedback animations. Mature and responsive.
+   ========================================================================== */
+
+/* Shimmer effect for XP bar and badges */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.shimmer-active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+/* Streak Flame Flicker */
+@keyframes flameFlicker {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.5));
+  }
+  50% {
+    transform: scale(1.1) translateY(-1px);
+    filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.8));
+  }
+}
+
+.streak-hud.high-streak .streak-icon svg {
+  animation: flameFlicker 1.6s infinite ease-in-out;
+}
+
+/* Option Select Ripple / Tap */
+.option-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Shake animation for wrong answer */
+@keyframes shakeSoft {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+  animation: shakeSoft 0.4s ease-in-out;
+}
+
+/* Gentle bounce for correct answer */
+@keyframes bounceSoft {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.bounce-win {
+  animation: bounceSoft 0.35s ease-out;
+}
+
+/* Timer warning pulse when under 8s */
+@keyframes timerUrgent {
+  0%, 100% { stroke: var(--state-error); opacity: 1; }
+  50% { stroke: #FFA5A5; opacity: 0.6; }
+}
+
+.timer-ring-progress.urgent {
+  animation: timerUrgent 1s infinite ease-in-out;
+}
+
+/* Card Entrance Slide */
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-entering {
+  animation: cardEnter 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Powerup activated flash */
+@keyframes powerupFlash {
+  0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 111, 97, 0); }
+  50% { transform: scale(1.08); box-shadow: 0 0 25px rgba(255, 111, 97, 0.75); }
+  100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 111, 97, 0); }
+}
+
+.powerup-activated {
+  animation: powerupFlash 0.5s ease-out;
+}
+
+/* ==========================================================================
+   FLOWER RAIN & SAD EMOJI REACTIONS
+   ========================================================================== */
+
+.feedback-reaction-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99999;
+  overflow: hidden;
+}
+
+/* 🌸 Falling Flower Petals */
+.flower-rain-petal {
+  position: absolute;
+  top: -60px;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+  animation: petalDropSway linear forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes petalDropSway {
+  0% {
+    top: -60px;
+    opacity: 0;
+    transform: translateX(0) rotate(0deg) scale(0.6);
+  }
+  15% {
+    opacity: 1;
+    transform: translateX(calc(var(--sway, 40px) * 0.5)) rotate(60deg) scale(1.1);
+  }
+  50% {
+    transform: translateX(var(--sway, 40px)) rotate(180deg) scale(1);
+  }
+  85% {
+    opacity: 0.95;
+    transform: translateX(calc(var(--sway, 40px) * 0.3)) rotate(280deg) scale(1);
+  }
+  100% {
+    top: 105vh;
+    opacity: 0;
+    transform: translateX(calc(var(--sway, 40px) * -0.5)) rotate(360deg) scale(0.9);
+  }
+}
+
+/* 🥺 Falling Sad Emojis */
+.sad-rain-emoji {
+  position: absolute;
+  top: 15vh;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6));
+  animation: sadEmojiFloat linear forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes sadEmojiFloat {
+  0% {
+    top: 10vh;
+    opacity: 0;
+    transform: translateX(0) scale(0.5) rotate(0deg);
+  }
+  20% {
+    opacity: 1;
+    transform: translateX(calc(var(--sway, 20px) * 0.4)) scale(1.15) rotate(-8deg);
+  }
+  50% {
+    transform: translateX(var(--sway, 20px)) scale(1) rotate(6deg);
+  }
+  80% {
+    opacity: 0.9;
+    transform: translateX(calc(var(--sway, 20px) * 0.7)) scale(0.95) rotate(-4deg);
+  }
+  100% {
+    top: 85vh;
+    opacity: 0;
+    transform: translateX(0) scale(0.8) rotate(10deg);
+  }
+}
+
+/* Pop-up Reaction Banner in screen center */
+.reaction-banner-popup {
+  position: fixed;
+  top: 22%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.6);
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: 9999px;
+  pointer-events: none;
+  user-select: none;
+  z-index: 100000;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.55);
+  animation: reactionPopupBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  white-space: nowrap;
+}
+
+.reaction-banner-popup.correct-banner {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.94) 0%, rgba(5, 150, 105, 0.96) 100%);
+  border: 2px solid rgba(110, 231, 183, 0.75);
+  color: #FFFFFF;
+  box-shadow: 0 0 35px rgba(16, 185, 129, 0.65);
+}
+
+.reaction-banner-popup.wrong-banner {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.94) 0%, rgba(185, 28, 28, 0.96) 100%);
+  border: 2px solid rgba(252, 165, 165, 0.75);
+  color: #FFFFFF;
+  box-shadow: 0 0 32px rgba(239, 68, 68, 0.55);
+}
+
+.reaction-banner-popup .banner-icon {
+  font-size: 1.65rem;
+  animation: iconWiggle 0.6s ease-in-out infinite alternate;
+}
+
+.reaction-banner-popup .banner-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@keyframes reactionPopupBounce {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -40%) scale(0.5);
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.reaction-banner-popup.fade-out {
+  opacity: 0 !important;
+  transform: translate(-50%, -65%) scale(0.85) !important;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+@keyframes iconWiggle {
+  from { transform: scale(1) rotate(-6deg); }
+  to { transform: scale(1.15) rotate(6deg); }
+}
+
