@@ -5,7 +5,8 @@
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
-    "dev": "node server/server.js"
+    "dev": "node server/server.js",
+    "build": "echo 'Build ready'"
   },
   "dependencies": {
     "cors": "^2.8.5",
