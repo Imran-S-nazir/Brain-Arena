@@ -1,3 +1,5 @@
+const dns = require('dns');
+try { dns.setServers(['8.8.8.8', '1.1.1.1']); } catch(e) {}
 const http = require('http');
 const path = require('path');
 const express = require('express');
@@ -235,10 +237,10 @@ initBattleSocket(io);
 // Connect to MongoDB
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/brain_arena';
 mongoose.connect(MONGO_URI, {
-  serverSelectionTimeoutMS: 4000
+  serverSelectionTimeoutMS: 6000
 })
 .then(() => {
-  console.log('✅ Connected to MongoDB successfully on', MONGO_URI);
+  console.log('✅ Connected to MongoDB successfully on', MONGO_URI.replace(/:[^:]*@/, ':****@'));
 })
 .catch((err) => {
   console.warn('⚠️ MongoDB connection notice (using in-memory resilient state):', err.message);
