@@ -238,12 +238,22 @@ app.delete('/api/users/:username', async (req, res) => {
   }
 });
 
-// Serve frontend files if routed to Express
+// Serve frontend static files and root HTML
 const path = require('path');
-const publicDir = path.resolve(__dirname, '..');
-app.use(express.static(publicDir));
+const fs = require('fs');
+
+const rootDir = fs.existsSync(path.join(__dirname, '..', 'index.html'))
+  ? path.resolve(__dirname, '..')
+  : (fs.existsSync(path.join(process.cwd(), 'index.html')) ? process.cwd() : __dirname);
+
+app.use(express.static(rootDir));
+
 app.get('/', (req, res) => {
-  res.sendFile(path.join(publicDir, 'index.html'));
+  const indexFile = path.join(rootDir, 'index.html');
+  if (fs.existsSync(indexFile)) {
+    return res.sendFile(indexFile);
+  }
+  return res.status(200).send('<h1>Brain Arena Serverless Ready</h1>');
 });
 
 module.exports = app;
