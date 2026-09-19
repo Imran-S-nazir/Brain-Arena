@@ -71,7 +71,16 @@ app.post('/api/users/sync', async (req, res) => {
       });
     }
 
-    let user = await User.findOne({ username: new RegExp('^' + username + '$', 'i') });
+    let user = null;
+    try {
+      user = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
+    } catch (e) {}
+
+    if (!user) {
+      try {
+        user = await User.findOne({ username: new RegExp('^' + username + '$', 'i') });
+      } catch (e) {}
+    }
 
     if (user) {
       user.username = username;
@@ -101,23 +110,39 @@ app.post('/api/users/sync', async (req, res) => {
       user.hasEntered = true;
       await user.save();
     } else {
-      user = await User.create({
-        username,
-        bestScore,
-        xp,
-        coins,
-        level,
-        belt,
-        totalSolved,
-        totalCorrect,
-        streak,
-        highestCombo,
-        fastestAnswerSec,
-        unlockedBadges,
-        isBossSlayer,
-        hasEntered: true,
-        lastActive: new Date()
-      });
+      try {
+        user = await User.create({
+          username,
+          bestScore,
+          xp,
+          coins,
+          level,
+          belt,
+          totalSolved,
+          totalCorrect,
+          streak,
+          highestCombo,
+          fastestAnswerSec,
+          unlockedBadges,
+          isBossSlayer,
+          hasEntered: true,
+          lastActive: new Date()
+        });
+      } catch (createErr) {
+        if (createErr.code === 11000) {
+          // Handled duplicate key race condition: user was created concurrently
+          user = (await User.findOne({ username }).collation({ locale: 'en', strength: 2 })) ||
+                 (await User.findOne({ username: new RegExp('^' + username + '$', 'i') }));
+          if (user) {
+            user.bestScore = Math.max(user.bestScore, bestScore);
+            user.xp = Math.max(user.xp, xp);
+            user.coins = Math.max(user.coins, coins);
+            await user.save();
+          }
+        } else {
+          throw createErr;
+        }
+      }
     }
 
     return res.json({ success: true, user });
